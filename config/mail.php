@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'mailersend'),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +48,9 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
-
+        'mailersend' => [
+             'transport' => 'mailersend',
+        ],
         'ses' => [
             'transport' => 'ses',
         ],
@@ -74,7 +76,7 @@ return [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),
         ],
-
+        'log_channel' => env('MAIL_LOG_CHANNEL', 'mail'),
         'array' => [
             'transport' => 'array',
         ],
