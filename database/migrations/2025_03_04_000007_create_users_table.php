@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 class CreateUsersTable extends Migration
 {
@@ -24,7 +23,9 @@ class CreateUsersTable extends Migration
             $table->string('phone_number'); // Campo obligatorio
             $table->rememberToken();
             $table->timestamps();
-            $table->enum('role', ['Admin_Group_Bed', 'Admin', 'Bet_User']);
+
+            // 🔹 Modificación en el campo role
+            $table->enum('role', ['Admin_Group_Bed', 'Admin', 'Bet_User'])->default('Bet_User');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -35,7 +36,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->text('payload');
@@ -45,17 +46,7 @@ class CreateUsersTable extends Migration
 
     public function down()
     {
-        // Verificar si las tablas existen antes de intentar eliminarlas
-        if (Schema::hasTable('sessions')) {
-            // Verificar si existe la restricción de clave foránea antes de intentar eliminarla
-            try {
-                // Intentar eliminar directamente las tablas sin usar dropForeign
-                Schema::dropIfExists('sessions');
-            } catch (\Exception $e) {
-                // Si falla, continuar con el proceso
-            }
-        }
-        
+        Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
     }

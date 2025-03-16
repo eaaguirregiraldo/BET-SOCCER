@@ -17,18 +17,18 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'password' => Hash::make('password123'),
-            'birthday' => '1990-01-01', 
-            'phone_number' => '1234567890', 
-            'role' => 'admin',
+            'birthday' => '1990-01-01',
+            'phone_number' => '1234567890',
+            'role' => 'Admin', 
         ]);
 
         User::create([
             'name' => 'Guest User',
             'email' => 'guest@example.com',
             'password' => Hash::make('password123'),
-            'birthday' => '2000-05-20', 
-            'phone_number' => '0987654321', 
-            'role' => 'guest',
+            'birthday' => '2000-05-20',
+            'phone_number' => '0987654321',
+            'role' => 'Bet_User', 
         ]);
     }
 }
