@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User; // Importación correcta del modelo User
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends Controller // CORREGIDO: Nombre de la clase debería ser UserController, no User
 {
     /**
      * Display a listing of the users.
@@ -39,24 +39,17 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:Admin_Group_Bed,Admin,Bet_User',
+            'birthday' => 'required|date',
             'phone_number' => 'required|string|min:10|max:15',
+            'role' => 'required|in:Admin,Bet_User,Admin_Group_Bed',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
-        
+
         User::create($validated);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Usuario creado exitosamente');
-    }
-
-    /**
-     * Display the specified user.
-     */
-    public function show(User $user)
-    {
-        return view('admin.users.show', compact('user'));
+            ->with('success', 'Usuario creado exitosamente.');
     }
 
     /**
@@ -75,17 +68,10 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:Admin_Group_Bed,Admin,Bet_User',
+            'birthday' => 'required|date',
             'phone_number' => 'required|string|min:10|max:15',
+            'role' => 'required|in:Admin,Bet_User,Admin_Group_Bed',
         ]);
-
-        // Solo actualiza la contraseña si se proporciona una nueva
-        if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'string|min:8|confirmed',
-            ]);
-            $validated['password'] = bcrypt($request->password);
-        }
 
         $user->update($validated);
 

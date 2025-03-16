@@ -121,6 +121,15 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
+    ],    
+    'providers' => [
+        // Otros proveedores...
+        Laravel\Sanctum\SanctumServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
     ],
-
+    'aliases' => [
+    // Otros alias...
+    'Sanctum' => Laravel\Sanctum\Sanctum::class,
+    ],
 ];
