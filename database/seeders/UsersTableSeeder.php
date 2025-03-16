@@ -3,20 +3,32 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UsersTableSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        DB::table('users')->insert([
-            'email' => 'email@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'Admin_Group_Bed',
-            'name' => 'Pepito Perez',
-            'created_at' => now(),
-            'updated_at' => now(),
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password123'),
+            'birthday' => '1990-01-01', 
+            'phone_number' => '1234567890', 
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Guest User',
+            'email' => 'guest@example.com',
+            'password' => Hash::make('password123'),
+            'birthday' => '2000-05-20', 
+            'phone_number' => '0987654321', 
+            'role' => 'guest',
         ]);
     }
 }
