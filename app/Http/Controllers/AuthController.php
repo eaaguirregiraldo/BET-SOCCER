@@ -10,7 +10,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     /**
-     * Registro de usuarios con Laravel Sanctum.
+     * Registro de usuario con Laravel Sanctum.
      */
     public function register(Request $request)
     {
@@ -20,6 +20,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'birthday' => 'required|date',
             'phone_number' => 'required|string|max:20',
+            'role' => 'required|in:Admin_Group_Bed,Admin,Bet_User', // 🔹 Verificar que el rol sea válido
         ]);
 
         $user = User::create([
@@ -28,14 +29,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'birthday' => $request->birthday,
             'phone_number' => $request->phone_number,
-            'role' => 'guest', // Asignamos por defecto el rol "guest"
+            'role' => $request->role,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'message' => 'Registro exitoso. Bienvenido, ' . $user->name . '!',
         ], 201);
     }
 
@@ -59,29 +60,32 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $message = "Bienvenido, {$user->name}!";
+
+        if ($user->role === 'Admin') {
+            $users = User::all(); // 🔹 Solo si es admin, enviar lista de usuarios
+            return response()->json([
+                'message' => $message,
+                'users' => $users,
+                'token' => $token,
+            ]);
+        }
+
         return response()->json([
+            'message' => $message,
             'token' => $token,
-            'user' => $user
         ]);
     }
 
     /**
-     * Cerrar sesión (eliminar el token).
+     * Cerrar sesión.
      */
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'Cierre de sesión exitoso'
+            'message' => 'Cierre de sesión exitoso',
         ]);
-    }
-
-    /**
-     * Obtener detalles del usuario autenticado.
-     */
-    public function userProfile(Request $request)
-    {
-        return response()->json($request->user());
     }
 }
