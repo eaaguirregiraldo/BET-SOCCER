@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,9 +16,10 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@example.com',
+            'email' => 'admin@admin.com',
             'password' => Hash::make('password123'),
             'birthday' => '1990-01-01',
+            'email_verified_at' => Carbon::now(),
             'phone_number' => '1234567890',
             'role' => 'Admin', 
         ]);

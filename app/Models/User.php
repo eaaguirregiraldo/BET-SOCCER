@@ -43,6 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'birthday' => 'date', // Asegúrate de que Laravel trate birthday como una fecha
+        'birthday' => 'date', 
     ];
 }
