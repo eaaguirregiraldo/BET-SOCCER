@@ -9,15 +9,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            UsersTableSeeder::class,
             TournamentsTableSeeder::class,
             TeamsTableSeeder::class,
-            GroupsTableSeeder::class,
-            ScheduleResultsTableSeeder::class,
+            GroupsTableSeeder::class,            
             StadiumsTableSeeder::class,
             AssociatedImagesTableSeeder::class,
-            UsersTableSeeder::class,
-            BetsTableSeeder::class,
-            GroupBetsTableSeeder::class,
+            ScheduleResultsTableSeeder::class,                                   
         ]);
     }
 }
